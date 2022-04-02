@@ -3,6 +3,7 @@ package ru.netology.manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
+import ru.netology.domain.NotFoundException;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
 import ru.netology.repository.ProductRepository;
@@ -33,6 +34,26 @@ class ProductManagerTest {
         manager.addProduct(seventh);
         manager.addProduct(eighth);
     }
+
+
+
+    @Test
+    void shouldRemoveRelevantProduct(){
+        manager.removeById(6);
+        Product[] actual = repository.findAll();
+        Product[] expected = new Product[]{first, second, third, fourth, fifth, seventh, eighth};
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void shouldNotRemoveIrrelevantProduct(){
+        assertThrows(NotFoundException.class,() -> {
+            repository.removeById(11);
+        });
+    }
+
+
+    //These tests are from the previous task.
 
     @Test
     void shouldFindByNameOfTheBook(){
@@ -101,4 +122,3 @@ class ProductManagerTest {
     }
 
 }
-
